@@ -34,18 +34,18 @@ test("Doubao catalog exposes GUI entry without API models and selects its fixed 
     const family = page
       .getByTestId("model-reel")
       .getByRole("button", { name: "豆包", exact: true });
-    await expect(family).toHaveAttribute("title", "豆包 · App 直连");
+    await expect(family).toHaveAttribute("title", "豆包 · App direct");
     await family.click();
     const catalog = page.locator(".model-catalog__popover:popover-open");
-    await expect(catalog).toContainText("App 直连");
-    await expect(catalog).not.toContainText("0 个模型");
+    await expect(catalog).toContainText("App direct");
+    await expect(catalog).not.toContainText("0 models");
     await expect(catalog).not.toContainText("尚未配置");
-    await catalog.getByRole("button", { name: "打开豆包 App", exact: true }).click();
+    await catalog.getByRole("button", { name: "Open Doubao App", exact: true }).click();
     await expect(page.getByTestId("doubao-app-composer")).toBeVisible();
     await expect(family).toHaveAttribute("aria-pressed", "true");
     await family.click();
     await expect(page.getByTestId("catalog-doubao-app")).toHaveAttribute("aria-pressed", "true");
-    await expect(catalog).toContainText("当前会话");
+    await expect(catalog).toContainText("current session");
     await page.screenshot({ path: test.info().outputPath("doubao-app-available.png") });
     await page.keyboard.press("Escape");
     await page.getByRole("button", { name: "豆包 App · 切回模型" }).click();

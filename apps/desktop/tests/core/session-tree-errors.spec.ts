@@ -37,7 +37,7 @@ test("a failed tree stays on its conversation and node while neighboring trees r
   });
   try {
     const page = await harness.firstWindow();
-    await page.getByRole("button", { name: "GitHub 研究", exact: true }).click();
+    await page.getByRole("button", { name: "GitHub research", exact: true }).click();
     await expect
       .poll(async () => (await getDesktopState(page)).selectedSessionId)
       .toBe(healthy.sessionId);
@@ -66,8 +66,10 @@ test("a failed tree stays on its conversation and node while neighboring trees r
     // Visible windows read every lane during the first paint. Reload so the
     // next read happens after the fault is installed.
     await page.reload();
-    await expect(page.getByRole("button", { name: "竞品调研", exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "竞品调研", exact: true }).click();
+    await expect(
+      page.getByRole("button", { name: "Competitor research", exact: true }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Competitor research", exact: true }).click();
     await expect(page.locator('.lhc[data-tree-error="true"]')).toHaveCount(1);
     await expect(page.locator(".conversation-tree-error")).toContainText(
       "这个会话的历史树暂时无法读取",
@@ -78,12 +80,12 @@ test("a failed tree stays on its conversation and node while neighboring trees r
     await expect(page.locator(".rp2 .tree-load-notice")).toHaveCount(0);
     await page.locator(".conversation-tree-error summary").click();
     await page.screenshot({ path: test.info().outputPath("local-tree-error.png") });
-    await page.getByRole("button", { name: "GitHub 研究", exact: true }).click();
+    await page.getByRole("button", { name: "GitHub research", exact: true }).click();
     await expect(page.locator(".conversation-tree-error")).toHaveCount(0);
     await expect(page.locator(".process-assistant").last()).toContainText("代码研究仍然可用");
     expect((await getDesktopState(page)).selectedSessionId).toBe(healthy.sessionId);
     await expect(page.locator('.lhc[data-tree-error="true"]')).toHaveCount(1);
-    await page.getByRole("button", { name: "竞品调研", exact: true }).click();
+    await page.getByRole("button", { name: "Competitor research", exact: true }).click();
     await expect(page.locator(".conversation-tree-error")).toBeVisible();
     await harness.electronApp.evaluate(() => {
       const control = (globalThis as typeof globalThis & { treeReadFault?: { fail: boolean } })

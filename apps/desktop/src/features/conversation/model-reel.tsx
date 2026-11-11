@@ -3,6 +3,7 @@ import { ModelBrandIcon } from "../../ui/model-brand-icon";
 import { MODEL_FAMILIES, modelFamily } from "../../ui/model-families";
 import type { RuntimeSnapshot, RuntimeModelRecord } from "@lancer/session-driver/runtime-types";
 import { buildModelOptions } from "./composer-commands";
+import { t } from "../../../contracts/i18n";
 import "./model-catalog.css";
 
 export function ModelReel({
@@ -79,8 +80,12 @@ export function ModelReel({
               data-anchor-key={`family:${family.id}`}
               title={
                 family.id === "doubao" && onSelectDoubaoApp
-                  ? `${family.label} · App 直连${count ? ` · ${count} 个可用 API 模型` : ""}`
-                  : `${family.label} · ${count} 个可用模型`
+                  ? `${family.label} · ${
+                      count
+                        ? t("lancer.modelReel.appModels", { count })
+                        : t("lancer.modelReel.appDirect")
+                    }`
+                  : `${family.label} · ${t("lancer.modelReel.modelCount", { count })}`
               }
               className={
                 count || (family.id === "doubao" && onSelectDoubaoApp) ? "" : "unconfigured"
@@ -105,29 +110,31 @@ export function ModelReel({
         className="model-catalog__current"
         title={doubaoActive ? "豆包 App" : `${provider} · ${modelId}`}
       >
-        {doubaoActive ? "豆包 App" : (modelId ?? "选择模型")}
+        {doubaoActive ? "豆包 App" : (modelId ?? t("lancer.modelReel.aria"))}
       </span>
       <div
         ref={popover}
         id={id}
         popover="auto"
         className="model-catalog__popover"
-        aria-label="模型选择"
+        aria-label={t("lancer.modelReel.aria")}
         onToggle={(event) => setOpen(event.currentTarget.matches(":popover-open"))}
       >
         <header>
           {families.find((f) => f.id === familyId)?.label}
           <span>
             {hasAppEntry
-              ? `App 直连${models.length ? ` · ${models.length} 个 API 模型` : ""}`
-              : `${models.length} 个模型`}
+              ? models.length
+                ? t("lancer.modelReel.appModels", { count: models.length })
+                : t("lancer.modelReel.appDirect")
+              : t("lancer.modelReel.modelCount", { count: models.length })}
           </span>
         </header>
         {models.length > 6 ? (
           <input
             type="search"
-            aria-label="搜索模型"
-            placeholder="搜索模型"
+            aria-label={t("lancer.modelReel.search")}
+            placeholder={t("lancer.modelReel.search")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -135,7 +142,7 @@ export function ModelReel({
         {hasAppEntry ? (
           <button
             type="button"
-            aria-label="打开豆包 App"
+            aria-label={t("lancer.modelReel.openDoubao")}
             aria-pressed={Boolean(doubaoActive)}
             disabled={disabled}
             data-testid="catalog-doubao-app"
@@ -146,7 +153,11 @@ export function ModelReel({
           >
             <ModelBrandIcon provider="doubao" />
             <span>
-              打开豆包 App<small>GUI 对话直连{doubaoActive ? " · 当前会话" : ""}</small>
+              {t("lancer.modelReel.openDoubao")}
+              <small>
+                {t("lancer.modelReel.openDoubaoDetail")}
+                {doubaoActive ? ` · ${t("lancer.modelReel.currentSession")}` : ""}
+              </small>
             </span>
           </button>
         ) : null}

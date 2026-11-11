@@ -9,7 +9,7 @@ import type {
   TerminalSize,
 } from "../../contracts/ipc";
 import { desktopIpc } from "../../contracts/ipc";
-import { appendTerminalReplay } from "../../contracts/terminal-model";
+import { appendTerminalReplay, defaultTerminalShell } from "../../contracts/terminal-model";
 
 type NodePty = typeof import("node-pty");
 type IPty = import("node-pty").IPty;
@@ -508,13 +508,7 @@ function ensureExecutable(shellPath: string): void {
 }
 
 function defaultShellForPlatform(platform: NodeJS.Platform = process.platform): string {
-  if (platform === "win32") {
-    return process.env.ComSpec || "cmd.exe";
-  }
-  if (platform === "darwin") {
-    return "/bin/zsh";
-  }
-  return "/bin/bash";
+  return defaultTerminalShell(platform, process.env);
 }
 
 function buildTerminalEnv(): Record<string, string> {

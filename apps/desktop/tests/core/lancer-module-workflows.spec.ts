@@ -79,7 +79,7 @@ export default function(pi) {
   };
   try {
     const page = await harness.firstWindow();
-    await create(page, "常态会话", "普通交流：聊视频与论文");
+    await create(page, "Standard chat", "普通交流：聊视频与论文");
     await expect(page.getByTestId("module-workflow")).toHaveCount(0);
     await expect(page.getByLabel("模型图标预览").getByRole("button")).toHaveCount(9);
     const family = page.locator('[data-anchor-key="family:openai"]');
@@ -88,7 +88,7 @@ export default function(pi) {
     await page.getByTestId("composer").click();
     await expect(page.getByTestId("composer")).toHaveCSS("outline-style", "none");
     await page.screenshot({ path: test.info().outputPath("composer-model-selection.png") });
-    const video = await create(page, "视频复刻", "视频复刻上下文凭据 BLUE-72");
+    const video = await create(page, "Video re-creation", "视频复刻上下文凭据 BLUE-72");
     await expect(page.getByTestId("module-workflow")).toBeVisible();
     await expect(page.getByTestId("thread-title")).toBeVisible();
     await expect(page.locator(".process-assistant").last()).toHaveCSS("box-shadow", "none");
@@ -157,7 +157,7 @@ export default function(pi) {
       "WORKFLOW_SKILL_EXPANDED_89",
     );
     await expect(page.locator(".process-assistant").last()).toContainText("交付有出处的对照表");
-    for (const mode of ["竞品调研", "论文查询", "GitHub 研究"])
+    for (const mode of ["Competitor research", "Paper lookup", "GitHub research"])
       await create(page, mode, `${mode}独立会话`);
     await expect(page.locator(".lhc")).toHaveCount(5);
     await expect(page.locator("[data-tree-rail]")).toHaveCount(5);
@@ -184,7 +184,7 @@ export default function(pi) {
     await expect(page.locator(".lhc")).toHaveCount(5);
     expect((await getDesktopState(page)).selectedSessionId).toBe(selectedBeforeFocus);
     await page.getByTestId("process-focus-tree").click();
-    await page.getByRole("button", { name: "视频复刻", exact: true }).click();
+    await page.getByRole("button", { name: "Video re-creation", exact: true }).click();
     await expect(page.getByLabel("交接阶段 2：学习拆解", { exact: true })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -202,7 +202,7 @@ export default function(pi) {
       .getByLabel("模型图标预览")
       .getByRole("button", { name: "Gemini", exact: true })
       .click();
-    await expect(page.getByLabel("模型选择", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Select model", { exact: true })).toBeVisible();
     await page.screenshot({ path: test.info().outputPath("model-catalog.png") });
     await page.keyboard.press("Escape");
     await page.getByLabel(/^管理会话：/).click();
@@ -220,7 +220,7 @@ export default function(pi) {
             .find((s) => s.id === video)?.archivedAt,
       )
       .toBeUndefined();
-    await page.getByRole("button", { name: "视频复刻", exact: true }).click();
+    await page.getByRole("button", { name: "Video re-creation", exact: true }).click();
     await expect(page.locator(".process-assistant").last()).toContainText("BLUE-72");
     expect((await getDesktopState(page)).selectedSessionId).toBe(video);
     const ids = (await getDesktopState(page)).workspaces

@@ -8,6 +8,7 @@ import { ProcessConversation } from "./process-conversation";
 import { ProcessCurves } from "./process-curves";
 import { ProcessLaneHeads, ProcessLegend, ProcessTree } from "./process-tree";
 import { ProcessSidebar } from "./shell-sidebar";
+import { t } from "../../../../contracts/i18n";
 import "./process-surface.css";
 import "./shell.css";
 
@@ -390,8 +391,8 @@ function ProcessFooter({
     "kimi",
   ];
   return (
-    <footer className="foot" aria-label="Recently here">
-      <span className="lb">RECENTLY HERE</span>
+    <footer className="foot" aria-label={t("lancer.recent.title")}>
+      <span className="lb">{t("lancer.recent.title")}</span>
       <div className="avs">
         {actors.map((actor) => (
           <button
@@ -411,7 +412,8 @@ function ProcessFooter({
         ))}
       </div>
       <span className="smp" style={{ marginLeft: "auto" }}>
-        {data.laneSummary ?? `${data.lanes.length} 条任务线`} · {data.statusLabel ?? "运行中"}
+        {data.laneSummary ?? t("lancer.process.taskLines", { count: data.lanes.length })} ·{" "}
+        {data.statusLabel ?? t("lancer.process.running")}
       </span>
     </footer>
   );

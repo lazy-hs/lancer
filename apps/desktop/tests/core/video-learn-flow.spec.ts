@@ -48,7 +48,7 @@ test("video zone shows the missing-downloader gate only in its owning conversati
     });
     const bar = window.getByTestId("video-learn-bar");
     await expect(bar).toBeVisible();
-    await expect(bar).toContainText("下载 → 媒体验证 → 模型分析");
+    await expect(bar).toContainText("Download → media check → model analysis");
     await expect(bar).not.toContainText("豆包");
     await expect(bar).not.toContainText("Codex");
     await window.getByTestId("video-learn-url").fill(DOUYIN_URL);
